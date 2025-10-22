@@ -32,6 +32,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_name = user.full_name or "пользователь"
     
     keyboard = [
+        [InlineKeyboardButton("📚 Книжная библиотека", callback_data="/books")],
+        [InlineKeyboardButton("💻 Программы для ПК", callback_data="/programs")],
+        [InlineKeyboardButton("🔗 Полезные ресурсы", callback_data="/resources")],
         [InlineKeyboardButton("🔄 Перезапустить бота", callback_data="/start")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -41,6 +44,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Я Средний Научный Бот канала <b>Республика Информация</b>, Фёдор Семёныч!🤖\n\n"
         "Используйте команды:\n"
         "/books - доступ к книжной библиотеке\n"
+        "/programs - программы для ПК\n" 
+        "/resources - полезные ресурсы\n"
         "/help - помощь по боту\n"
         "/profile - ваш профиль\n\n"
         "📢 Основной канал: @republic_inform",
@@ -49,6 +54,13 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def books(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка команды /books с HTML-ссылками"""
+    keyboard = [
+        [InlineKeyboardButton("💻 Программы для ПК", callback_data="/programs")],
+        [InlineKeyboardButton("🔗 Полезные ресурсы", callback_data="/resources")],
+        [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
     response_text = (
         "📚 <b>Книжный раздел Республика</b>\n\n"
         "• <a href='https://disk.yandex.ru/d/BX1xA5UCNxz3YA'>Основная библиотека</a> - 5000+ книг\n"
@@ -57,11 +69,67 @@ async def books(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "🔐 <i>Для доступа к книгам требуется пароль от архива</i>\n"
         "💡 Пароль можно получить в основном канале: @republic_inform"
     )
-    await update.message.reply_html(response_text, disable_web_page_preview=True)
+    await update.message.reply_html(response_text, 
+                                  reply_markup=reply_markup,
+                                  disable_web_page_preview=True)
+
+async def programs(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработка команды /programs - программы для ПК"""
+    keyboard = [
+        [InlineKeyboardButton("📚 Книжная библиотека", callback_data="/books")],
+        [InlineKeyboardButton("🔗 Полезные ресурсы", callback_data="/resources")],
+        [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    response_text = (
+        "💻 <b>Полезные программы для ПК</b>\n\n"
+        "• <a href='https://diakov.net/'>Diakov.net</a> - проверенные программы и репаки\n"
+        "• <a href='https://repack.me/'>Repack.me</a> - репаки игр и программ\n"
+        "• <a href='https://rutracker.org/'>RuTracker</a> - торрент-трекер\n"
+        "• <a href='https://www.softportal.com/'>SoftPortal</a> - софт портал\n\n"
+        "⚠️ <i>Скачивайте программы только из проверенных источников!</i>"
+    )
+    await update.message.reply_html(response_text, 
+                                  reply_markup=reply_markup,
+                                  disable_web_page_preview=True)
+
+async def resources(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработка команды /resources - полезные ресурсы"""
+    keyboard = [
+        [InlineKeyboardButton("📚 Книжная библиотека", callback_data="/books")],
+        [InlineKeyboardButton("💻 Программы для ПК", callback_data="/programs")],
+        [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
+    response_text = (
+        "🔗 <b>Полезные ресурсы</b>\n\n"
+        "🎓 <b>Образование:</b>\n"
+        "• <a href='https://stepik.org/'>Stepik</a> - онлайн-курсы\n"
+        "• <a href='https://openedu.ru/'>Открытое образование</a>\n"
+        "• <a href='https://arzamas.academy/'>Арзамас</a> - гуманитарные курсы\n\n"
+        "📚 <b>Книги:</b>\n"
+        "• <a href='https://flibusta.is/'>Флибуста</a> - электронная библиотека\n"
+        "• <a href='https://libgen.is/'>LibGen</a> - научная литература\n\n"
+        "💻 <b>IT и программирование:</b>\n"
+        "• <a href='https://github.com/'>GitHub</a> - код и проекты\n"
+        "• <a href='https://stackoverflow.com/'>Stack Overflow</a> - помощь программистам\n"
+        "• <a href='https://habr.com/'>Habr</a> - IT-сообщество\n\n"
+        "🛠️ <b>Инструменты:</b>\n"
+        "• <a href='https://notion.so/'>Notion</a> - организация работы\n"
+        "• <a href='https://trello.com/'>Trello</a> - управление проектами"
+    )
+    await update.message.reply_html(response_text, 
+                                  reply_markup=reply_markup,
+                                  disable_web_page_preview=True)
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка команды /help с кнопкой перезапуска"""
     keyboard = [
+        [InlineKeyboardButton("📚 Книги", callback_data="/books")],
+        [InlineKeyboardButton("💻 Программы", callback_data="/programs")],
+        [InlineKeyboardButton("🔗 Ресурсы", callback_data="/resources")],
         [InlineKeyboardButton("🔄 Перезапустить бота", callback_data="/start")]
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
@@ -71,6 +139,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "📚 <u>Основные команды</u>:\n"
         "/start - начать работу с ботом\n"
         "/books - доступ к книжной библиотеке\n"
+        "/programs - программы для ПК\n"
+        "/resources - полезные ресурсы\n"
         "/profile - ваш профиль\n"
         "/settings - настройки бота\n\n"
         "🔗 <u>Полезные ссылки</u>:\n"
@@ -83,12 +153,20 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def settings(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Обработка команды /settings"""
+    keyboard = [
+        [InlineKeyboardButton("📚 Книги", callback_data="/books")],
+        [InlineKeyboardButton("💻 Программы", callback_data="/programs")],
+        [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    
     await update.message.reply_html(
         "⚙️ <b>Настройки бота</b>\n\n"
         "🔔 Уведомления: включены\n"
         "🌐 Язык: русский\n"
         "🛡️ Безопасность: стандартная\n\n"
-        "⚡ Дополнительные настройки в разработке"
+        "⚡ Дополнительные настройки в разработке",
+        reply_markup=reply_markup
     )
 
 async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -96,6 +174,13 @@ async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user = update.effective_user
     user_name = user.full_name or "пользователь"
     username = f"@{user.username}" if user.username else "не установлен"
+    
+    keyboard = [
+        [InlineKeyboardButton("📚 Книги", callback_data="/books")],
+        [InlineKeyboardButton("💻 Программы", callback_data="/programs")],
+        [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
     
     profile_text = (
         f"👤 <b>Ваш профиль</b>\n\n"
@@ -107,7 +192,7 @@ async def profile(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"📚 Книг скачано: 0\n"
         f"🎁 Премиум: не активен"
     )
-    await update.message.reply_html(profile_text)
+    await update.message.reply_html(profile_text, reply_markup=reply_markup)
 
 # ===== ОБРАБОТЧИК КНОПОК =====
 async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -120,6 +205,9 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         user_name = user.full_name or "пользователь"
         
         keyboard = [
+            [InlineKeyboardButton("📚 Книжная библиотека", callback_data="/books")],
+            [InlineKeyboardButton("💻 Программы для ПК", callback_data="/programs")],
+            [InlineKeyboardButton("🔗 Полезные ресурсы", callback_data="/resources")],
             [InlineKeyboardButton("🔄 Перезапустить бота", callback_data="/start")]
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
@@ -129,11 +217,91 @@ async def button_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Я Средний Научный Бот канала <b>Республика Информация</b>, Фёдор Семёныч!🤖\n\n"
             "Используйте команды:\n"
             "/books - доступ к книжной библиотеке\n"
+            "/programs - программы для ПК\n"
+            "/resources - полезные ресурсы\n"
             "/help - помощь по боту\n"
             "/profile - ваш профиль\n\n"
             "📢 Основной канал: @republic_inform",
             parse_mode='HTML',
             reply_markup=reply_markup
+        )
+    
+    elif query.data == "/books":
+        keyboard = [
+            [InlineKeyboardButton("💻 Программы для ПК", callback_data="/programs")],
+            [InlineKeyboardButton("🔗 Полезные ресурсы", callback_data="/resources")],
+            [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        response_text = (
+            "📚 <b>Книжный раздел Республика</b>\n\n"
+            "• <a href='https://disk.yandex.ru/d/BX1xA5UCNxz3YA'>Основная библиотека</a> - 5000+ книг\n"
+            "• <a href='https://disk.yandex.ru/d/d5cAK6TBCJSa_Q'>Добавить новую книгу</a> (требуется регистрация)\n"
+            "• <a href='https://disk.yandex.ru/d/BX1xA5UCNxz3YA?sort=modified'>Новинки</a> - последние добавленные книги\n\n"
+            "🔐 <i>Для доступа к книгам требуется пароль от архива</i>\n"
+            "💡 Пароль можно получить в основном канале: @republic_inform"
+        )
+        await query.edit_message_text(
+            response_text,
+            parse_mode='HTML',
+            reply_markup=reply_markup,
+            disable_web_page_preview=True
+        )
+    
+    elif query.data == "/programs":
+        keyboard = [
+            [InlineKeyboardButton("📚 Книжная библиотека", callback_data="/books")],
+            [InlineKeyboardButton("🔗 Полезные ресурсы", callback_data="/resources")],
+            [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        response_text = (
+            "💻 <b>Полезные программы для ПК</b>\n\n"
+            "• <a href='https://diakov.net/'>Diakov.net</a> - проверенные программы и репаки\n"
+            "• <a href='https://repack.me/'>Repack.me</a> - репаки игр и программ\n"
+            "• <a href='https://rutracker.org/'>RuTracker</a> - торрент-трекер\n"
+            "• <a href='https://www.softportal.com/'>SoftPortal</a> - софт портал\n\n"
+            "⚠️ <i>Скачивайте программы только из проверенных источников!</i>"
+        )
+        await query.edit_message_text(
+            response_text,
+            parse_mode='HTML',
+            reply_markup=reply_markup,
+            disable_web_page_preview=True
+        )
+    
+    elif query.data == "/resources":
+        keyboard = [
+            [InlineKeyboardButton("📚 Книжная библиотека", callback_data="/books")],
+            [InlineKeyboardButton("💻 Программы для ПК", callback_data="/programs")],
+            [InlineKeyboardButton("🔄 Главное меню", callback_data="/start")]
+        ]
+        reply_markup = InlineKeyboardMarkup(keyboard)
+        
+        response_text = (
+            "🔗 <b>Полезные ресурсы</b>\n\n"
+            "🎓 <b>Образование:</b>\n"
+            "• <a href='https://stepik.org/'>Stepik</a> - онлайн-курсы\n"
+            "• <a href='https://openedu.ru/'>Открытое образование</a>\n"
+            "• <a href='https://arzamas.academy/'>Арзамас</a> - гуманитарные курсы\n\n"
+            "📚 <b>Книги:</b>\n"
+            "• <a href='https://flibusta.is/'>Флибуста</a> - электронная библиотека\n"
+            "• <a href='https://libgen.is/'>LibGen</a> - научная литература\n\n"
+            "💻 <b>IT и программирование:</b>\n"
+            "• <a href='https://github.com/'>GitHub</a> - код и проекты\n"
+            "• <a href='https://stackoverflow.com/'>Stack Overflow</a> - помощь программистам\n"
+            "• <a href='https://habr.com/'>Habr</a> - IT-сообщество\n\n"
+            "🛠️ <b>Инструменты:</b>\n"
+            "• <a href='https://notion.so/'>Notion</a> - организация работы\n"
+            "• <a href='https://trello.com/'>Trello</a> - управление проектами"
+        )
+        await query.edit_message_text(
+            response_text,
+            parse_mode='HTML',
+            reply_markup=reply_markup,
+            disable_web_page_preview=True
         )
 
 # ===== ОБРАБОТЧИК ОШИБОК =====
@@ -176,6 +344,8 @@ def setup_handlers():
     """Регистрация всех обработчиков"""
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CommandHandler("books", books))
+    application.add_handler(CommandHandler("programs", programs))
+    application.add_handler(CommandHandler("resources", resources))
     application.add_handler(CommandHandler("help", help_command))
     application.add_handler(CommandHandler("settings", settings))
     application.add_handler(CommandHandler("profile", profile))
